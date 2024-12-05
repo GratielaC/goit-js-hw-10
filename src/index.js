@@ -1,7 +1,5 @@
 import './css/styles.css';
-import { Buffer } from 'buffer';
 
-window.Buffer = Buffer; // Make it available globally.
 import { getElement } from './jsFiles/getElement.js';
 import _ from 'lodash';
 import inputEventHandler from './jsFiles/inputEventHandler.js';

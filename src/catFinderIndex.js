@@ -1,32 +1,22 @@
-// catFinderIndex.js
-import { fetchBreeds } from './jsFiles/catFinder/cat-api.js';
+// imports
+import { getCatsBreeds, fetchCatByBreed } from './jsFiles/catFinder/cat-api.js';
+import { getElement } from './jsFiles/getElement.js';
 
+// variabiles
 
-const breedSelect = document.querySelector('.breed-select');
-const loader = document.querySelector('.loader');
-const errorElement = document.querySelector('.error');
+export const breedSelect = getElement('.breed-select');
+export const loader = getElement('.loader-container');
+export const catInfo = getElement('.cat-info');
+export const breedSelectContainer = getElement('.breed-select-container');
 
-function populateBreedSelect(breeds) {
-  breedSelect.innerHTML = breeds
-    .map(breed => `<option value="${breed.id}">${breed.name}</option>`)
-    .join('');
-}
+const showBreedInfo = e => {
+  const catId = e.target.value;
+  const url = `https://api.thecatapi.com/v1/images/search?breed_ids=${catId}&api_key=live_yyt921ibZYoALyxNkRNjFjEZAaEZmc8IbLIPjqKyPyABlK3qvZVyozRR4YZH7kvD`;
+  breedSelectContainer.classList.add('hide');
+  loader.classList.remove('hide');
+  catInfo.innerHTML = '';
+  fetchCatByBreed(url);
+};
 
-function loadBreeds() {
-  loader.classList.remove('hidden'); // Show loader
-  errorElement.classList.add('hidden'); // Hide error message
-
-  fetchBreeds()
-    .then(breeds => {
-      populateBreedSelect(breeds);
-      breedSelect.classList.remove('hidden'); // Show dropdown
-    })
-    .catch(() => {
-      errorElement.classList.remove('hidden'); // Show error message
-    })
-    .finally(() => {
-      loader.classList.add('hidden'); // Hide loader
-    });
-}
-
-document.addEventListener('DOMContentLoaded', loadBreeds);
+window.addEventListener('DOMContentLoaded', getCatsBreeds);
+breedSelect.addEventListener('change', showBreedInfo);
